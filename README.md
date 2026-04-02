@@ -1,6 +1,110 @@
-# FinFlow — Finance Dashboard (React)
+# FinFlow — Finance Dashboard
 
-A clean, interactive finance dashboard built with React 18 + TypeScript + Vite + Chart.js.
+> A clean, interactive personal finance dashboard built with React 18, TypeScript, and Vite. Built as part of a frontend internship assignment for Zorvyn FinTech.
+
+🔗 **Live Demo:** https://keshavreddy0009.github.io/finance-dashboard/
+
+---
+
+## Preview
+
+| Overview | Transactions | Insights |
+|---|---|---|
+| Summary cards, trend chart, donut chart | Paginated table, filters, add/edit/delete | Spending patterns, monthly comparison |
+
+---
+
+## Features
+
+### 📊 Dashboard Overview
+- **4 Summary Cards** — Total Balance, Monthly Income, Expenses, Savings Rate with month-over-month change indicators
+- **Balance Trend Chart** — Bar chart comparing income vs expenses with 6M / 1Y period toggle
+- **Spending Donut Chart** — Top 5 expense categories with proportional legend bars
+- **Recent Transactions** — Latest 5 transactions at a glance
+
+### 💳 Transactions
+- Full **paginated table** (10 per page) with all transaction details
+- **Filter** by type (Income / Expense) and category
+- **Sort** by date or amount (ascending / descending)
+- **Search** by description or category (live from topbar)
+- **Add / Edit / Delete** transactions — Admin role only
+- **Export CSV** — downloads all transactions instantly
+
+### 🔐 Role-Based UI
+Switch roles using the dropdown in the sidebar — no login needed, purely frontend simulation.
+
+| Feature | Viewer | Admin |
+|---|---|---|
+| View dashboard & transactions | ✅ | ✅ |
+| Add transactions | ❌ | ✅ |
+| Edit transactions | ❌ | ✅ |
+| Delete transactions | ❌ | ✅ |
+| Export CSV | ❌ | ✅ |
+
+### 📈 Insights
+- Top spending category with total amount
+- Average transaction size across all records
+- Busiest day of the week by transaction count
+- Largest single expense
+- Spending vs income health ratio (with color indicator)
+- Monthly income vs expense comparison (last 3 months)
+- Full category breakdown horizontal bar chart
+
+### ⚙️ State Management
+All state lives in a single React Context (`AppContext`), with derived data computed via `useMemo` for performance. No prop drilling.
+
+- `transactions` — full array of records
+- `role` — current user role
+- `filters` — type / category / search / sort
+- `currentPage` — pagination
+- `activePeriod` — chart time range
+
+Persisted to `localStorage` — transactions and role survive page refresh.
+
+---
+
+## Tech Stack
+
+| Layer | Choice | Reason |
+|---|---|---|
+| Framework | React 18 + TypeScript | Component architecture, type safety |
+| Build Tool | Vite | Fast dev server, optimized builds |
+| Charts | Chart.js 4 + react-chartjs-2 | Lightweight, easy React integration |
+| Styling | Pure CSS + CSS variables | Full control, dark theme, no bloat |
+| Fonts | Syne + DM Sans (Google Fonts) | Distinctive, readable pairing |
+| State | React Context + useMemo | Simple, no over-engineering |
+| Storage | localStorage | Browser-native persistence |
+| Hosting | GitHub Pages | Zero-cost static deployment |
+
+---
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── Sidebar.tsx              # Navigation + role switcher
+│   ├── Topbar.tsx               # Search, export, avatar
+│   ├── SummaryCards.tsx         # 4 stat cards with change indicators
+│   ├── TrendChart.tsx           # Bar chart: income vs expenses
+│   ├── DonutChart.tsx           # Spending breakdown by category
+│   ├── RecentTransactions.tsx   # Last 5 transactions
+│   ├── TransactionTable.tsx     # Full paginated table with filters
+│   ├── TransactionModal.tsx     # Add / Edit modal
+│   └── Toast.tsx                # Notification system
+├── context/
+│   └── AppContext.tsx           # Global state, derived data, actions
+├── data/
+│   └── seed.ts                  # 40 seed transactions across 6 months
+├── pages/
+│   ├── Dashboard.tsx
+│   ├── Transactions.tsx
+│   └── Insights.tsx
+├── types/
+│   └── index.ts                 # TypeScript interfaces
+└── utils/
+    └── finance.ts               # Formatting, date utils, CSV export
+```
 
 ---
 
@@ -8,16 +112,18 @@ A clean, interactive finance dashboard built with React 18 + TypeScript + Vite +
 
 ### Prerequisites
 - Node.js 18+
-- npm or yarn
+- npm
 
 ### Install & Run
 
 ```bash
+git clone https://github.com/keshavreddy0009/finance-dashboard.git
+cd finance-dashboard
 npm install
 npm run dev
 ```
 
-Then open `http://localhost:5173`
+Open `http://localhost:5173`
 
 ### Build for Production
 
@@ -28,96 +134,48 @@ npm run preview
 
 ---
 
-## Project Structure
+## Data Structure
 
+Each transaction:
+
+```ts
+{
+  id: number;
+  date: string;        // "YYYY-MM-DD"
+  description: string;
+  category: string;    // Food | Transport | Housing | ...
+  type: "income" | "expense";
+  amount: number;
+}
 ```
-finflow-dashboard/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   ├── Sidebar.tsx         # Navigation sidebar with role switcher
-│   │   ├── Topbar.tsx          # Top bar with search, export, avatar
-│   │   ├── SummaryCards.tsx    # 4 summary stat cards
-│   │   ├── TrendChart.tsx      # Bar chart: income vs expenses over time
-│   │   ├── DonutChart.tsx      # Donut chart: spending by category
-│   │   ├── RecentTransactions.tsx  # Last 5 transactions table
-│   │   ├── TransactionTable.tsx    # Full paginated transactions table
-│   │   ├── TransactionModal.tsx    # Add/Edit transaction modal
-│   │   └── Toast.tsx           # Toast notification system
-│   ├── context/
-│   │   └── AppContext.tsx       # Global state (transactions, role, filters)
-│   ├── data/
-│   │   └── seed.ts             # Seed transactions & category colors
-│   ├── hooks/
-│   │   └── useToast.ts         # Toast hook
-│   ├── pages/
-│   │   ├── Dashboard.tsx       # Overview page
-│   │   ├── Transactions.tsx    # Transactions page
-│   │   └── Insights.tsx        # Insights page
-│   ├── types/
-│   │   └── index.ts            # TypeScript types
-│   ├── utils/
-│   │   └── finance.ts          # Utility functions (fmt, dateLabel, etc.)
-│   ├── App.tsx                 # Root app component
-│   ├── main.tsx                # React entry point
-│   └── index.css               # Global styles (CSS variables + layout)
-├── index.html
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
-```
+
+40 seed transactions across 6 months (Nov 2024 – Apr 2025) covering 10 categories: Salary, Freelance, Investment, Food, Transport, Housing, Entertainment, Healthcare, Shopping, Other.
 
 ---
 
-## Features
+## Design Decisions
 
-### Dashboard Overview
-- 4 Summary Cards — Total Balance, Income, Expenses, Savings Rate with month-over-month change
-- Balance Trend Chart — Bar chart comparing monthly income vs expenses (6M / 1Y toggle)
-- Spending Donut Chart — Category breakdown with custom legend and percentage bars
-- Recent Transactions — Quick view of the 5 most recent transactions
-
-### Transactions Section
-- Full paginated table (10 per page)
-- Filter by type (Income / Expense) and category
-- Sort by date, amount (ascending / descending)
-- Search via the top search bar
-- Add / Edit / Delete transactions (Admin role only)
-- Export CSV button (Admin only)
-
-### Role-Based UI
-| Feature | Viewer | Admin |
-|---|---|---|
-| View dashboard | ✅ | ✅ |
-| View transactions | ✅ | ✅ |
-| Add transactions | ❌ | ✅ |
-| Edit transactions | ❌ | ✅ |
-| Delete transactions | ❌ | ✅ |
-| Export CSV | ❌ | ✅ |
-
-### Insights Page
-- Top spending category
-- Average transaction size
-- Busiest day of the week
-- Largest single expense
-- Spending vs income ratio
-- Monthly comparison with progress bars
-- Category breakdown horizontal bar chart
-
-### State & Persistence
-- React Context for global state
-- localStorage persistence for transactions and role
+- **Single Context, no Redux** — state is simple enough; adding Redux would be over-engineering for this scope
+- **CSS variables, no Tailwind** — gives precise control over the dark theme without shipping a large utility CSS file
+- **react-chartjs-2 over Recharts** — lighter bundle, better canvas performance for multiple simultaneous charts
+- **Derived data in useMemo** — filtered/sorted transactions and summary stats are computed from source data, never stored separately, keeping state single-source-of-truth
+- **No router** — single-page navigation via state keeps the bundle minimal and avoids hash/history issues on GitHub Pages
 
 ---
 
-## Tech Stack
+## Optional Enhancements Implemented
 
-| Layer | Choice |
-|---|---|
-| Framework | React 18 + TypeScript |
-| Build Tool | Vite |
-| Charts | Chart.js 4 + react-chartjs-2 |
-| Styling | Pure CSS with CSS variables (dark theme) |
-| Fonts | Syne + DM Sans (Google Fonts) |
-| Storage | localStorage |
+- ✅ Dark mode (default)
+- ✅ localStorage persistence
+- ✅ Export to CSV
+- ✅ Animations and transitions (modal, cards, toasts, charts)
+- ✅ Advanced filtering (type + category + search + sort combined)
+- ✅ Responsive design (mobile hamburger menu, adaptive grid layouts)
+- ✅ Empty state handling
+- ✅ Toast notifications for all actions
+
+---
+
+## Author
+
+**Chilkuri Sai Keshav Reddy** 
