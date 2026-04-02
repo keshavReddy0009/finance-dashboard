@@ -1,48 +1,92 @@
-# FinFlow — Finance Dashboard
+# FinFlow — Finance Dashboard (React)
 
-A clean, interactive single-file finance dashboard built with vanilla JavaScript, HTML, and CSS. No frameworks or build tools required.
+A clean, interactive finance dashboard built with React 18 + TypeScript + Vite + Chart.js.
 
 ---
 
 ## Setup & Running
 
-Since this is a single HTML file, setup is instant:
+### Prerequisites
+- Node.js 18+
+- npm or yarn
 
-1. Download `finance-dashboard.html`
-2. Open it in any modern browser (Chrome, Firefox, Edge, Safari)
-3. No server, no install, no build step needed
+### Install & Run
 
-To serve it locally (optional):
 ```bash
-# Python
-python3 -m http.server 8080
-
-# Node
-npx serve .
+npm install
+npm run dev
 ```
-Then open `http://localhost:8080/finance-dashboard.html`
+
+Then open `http://localhost:5173`
+
+### Build for Production
+
+```bash
+npm run build
+npm run preview
+```
 
 ---
 
-## Features Overview
+## Project Structure
+
+```
+finflow-dashboard/
+├── public/
+│   └── favicon.svg
+├── src/
+│   ├── components/
+│   │   ├── Sidebar.tsx         # Navigation sidebar with role switcher
+│   │   ├── Topbar.tsx          # Top bar with search, export, avatar
+│   │   ├── SummaryCards.tsx    # 4 summary stat cards
+│   │   ├── TrendChart.tsx      # Bar chart: income vs expenses over time
+│   │   ├── DonutChart.tsx      # Donut chart: spending by category
+│   │   ├── RecentTransactions.tsx  # Last 5 transactions table
+│   │   ├── TransactionTable.tsx    # Full paginated transactions table
+│   │   ├── TransactionModal.tsx    # Add/Edit transaction modal
+│   │   └── Toast.tsx           # Toast notification system
+│   ├── context/
+│   │   └── AppContext.tsx       # Global state (transactions, role, filters)
+│   ├── data/
+│   │   └── seed.ts             # Seed transactions & category colors
+│   ├── hooks/
+│   │   └── useToast.ts         # Toast hook
+│   ├── pages/
+│   │   ├── Dashboard.tsx       # Overview page
+│   │   ├── Transactions.tsx    # Transactions page
+│   │   └── Insights.tsx        # Insights page
+│   ├── types/
+│   │   └── index.ts            # TypeScript types
+│   ├── utils/
+│   │   └── finance.ts          # Utility functions (fmt, dateLabel, etc.)
+│   ├── App.tsx                 # Root app component
+│   ├── main.tsx                # React entry point
+│   └── index.css               # Global styles (CSS variables + layout)
+├── index.html
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
+```
+
+---
+
+## Features
 
 ### Dashboard Overview
-- **4 Summary Cards** — Total Balance, Income, Expenses, Savings Rate with month-over-month change indicators
-- **Balance Trend Chart** — Bar chart comparing monthly income vs expenses (6M / 1Y toggle)
-- **Spending Donut Chart** — Category breakdown with custom legend and percentage bars
-- **Recent Transactions** — Quick view of the 5 most recent transactions
+- 4 Summary Cards — Total Balance, Income, Expenses, Savings Rate with month-over-month change
+- Balance Trend Chart — Bar chart comparing monthly income vs expenses (6M / 1Y toggle)
+- Spending Donut Chart — Category breakdown with custom legend and percentage bars
+- Recent Transactions — Quick view of the 5 most recent transactions
 
 ### Transactions Section
-- Full paginated table (10 per page) with all transaction details
-- **Filter** by type (Income / Expense) and category
-- **Sort** by date, amount (ascending / descending)
-- **Search** via the top search bar (searches description and category)
-- **Add / Edit / Delete** transactions (Admin role only)
-- **Export CSV** button (Admin only) — downloads all transactions as a CSV file
+- Full paginated table (10 per page)
+- Filter by type (Income / Expense) and category
+- Sort by date, amount (ascending / descending)
+- Search via the top search bar
+- Add / Edit / Delete transactions (Admin role only)
+- Export CSV button (Admin only)
 
 ### Role-Based UI
-Switch roles via the dropdown in the sidebar footer:
-
 | Feature | Viewer | Admin |
 |---|---|---|
 | View dashboard | ✅ | ✅ |
@@ -52,78 +96,28 @@ Switch roles via the dropdown in the sidebar footer:
 | Delete transactions | ❌ | ✅ |
 | Export CSV | ❌ | ✅ |
 
-Role is persisted to `localStorage` across page refreshes.
-
 ### Insights Page
-- Top spending category with total amount
+- Top spending category
 - Average transaction size
 - Busiest day of the week
 - Largest single expense
-- Spending vs income ratio with health indicator
-- Total transaction counts
-- **Monthly Comparison** — Progress bars comparing income vs expenses for last 3 months
-- **Category Breakdown** — Horizontal bar chart for all expense categories
+- Spending vs income ratio
+- Monthly comparison with progress bars
+- Category breakdown horizontal bar chart
 
-### State Management
-All state is managed in a single `state` object:
-- `transactions` — array of all transaction records
-- `role` — current user role
-- `filters` — active filter/sort/search values
-- `currentPage` — pagination state
-
-Persisted to `localStorage`:
-- Transactions survive page refreshes
-- Role selection persists
-
-### UX Details
-- **Empty states** — friendly messages when no data matches filters
-- **Toast notifications** — success/error feedback for all actions
-- **Responsive** — works on mobile (hamburger menu), tablet, and desktop
-- **Smooth animations** — card hover effects, chart transitions, modal slide-in
-- **Donut chart legend** — proportional mini-bars next to each category label
+### State & Persistence
+- React Context for global state
+- localStorage persistence for transactions and role
 
 ---
 
 ## Tech Stack
 
-| Layer | Choice | Reason |
-|---|---|---|
-| Framework | Vanilla JS | Zero dependencies, instant load |
-| Charts | Chart.js 4.4 (CDN) | Lightweight, easy to configure |
-| Styling | Pure CSS with CSS variables | Full control, dark theme |
-| Fonts | Syne + DM Sans (Google Fonts) | Distinctive, readable pairing |
-| Storage | localStorage | Simple, browser-native persistence |
-
----
-
-## Data Structure
-
-Each transaction follows this shape:
-```json
-{
-  "id": 1,
-  "date": "2025-04-01",
-  "description": "Monthly Salary",
-  "category": "Salary",
-  "type": "income",
-  "amount": 5200
-}
-```
-
-40 seed transactions are included across 6 months (Nov 2024 – Apr 2025) covering categories: Salary, Freelance, Investment, Food, Transport, Housing, Entertainment, Healthcare, Shopping, Other.
-
----
-
-## Approach
-
-The goal was to keep everything in one self-contained file with zero build tooling, while still delivering a polished, production-feel UI. State flows one-way: user actions mutate the `state` object → `save()` persists to localStorage → render functions re-draw the relevant UI sections. Charts are rebuilt on navigation to ensure they reflect the latest data. Role switching is purely presentational — CSS class `.admin-only` controls visibility of action elements.
-
----
-
-## Optional Enhancements Implemented
-
-- ✅ Dark mode (default, full dark theme)
-- ✅ Data persistence via localStorage
-- ✅ Export to CSV
-- ✅ Animations and transitions (modal, cards, toasts, charts)
-- ✅ Advanced filtering (type + category + search + sort combined)
+| Layer | Choice |
+|---|---|
+| Framework | React 18 + TypeScript |
+| Build Tool | Vite |
+| Charts | Chart.js 4 + react-chartjs-2 |
+| Styling | Pure CSS with CSS variables (dark theme) |
+| Fonts | Syne + DM Sans (Google Fonts) |
+| Storage | localStorage |

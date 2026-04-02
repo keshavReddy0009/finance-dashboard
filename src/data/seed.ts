@@ -1,0 +1,62 @@
+import { Transaction } from '../types';
+
+export const CAT_COLORS: Record<string, string> = {
+  Food: '#6c72f5',
+  Transport: '#2dd4a0',
+  Housing: '#f5a623',
+  Entertainment: '#b06ef5',
+  Healthcare: '#f26b6b',
+  Shopping: '#3ecfcf',
+  Salary: '#2dd4a0',
+  Freelance: '#6c72f5',
+  Investment: '#f5a623',
+  Other: '#9399a8',
+};
+
+export const ALL_CATEGORIES = [
+  'Food', 'Transport', 'Housing', 'Entertainment',
+  'Healthcare', 'Shopping', 'Salary', 'Freelance', 'Investment', 'Other'
+];
+
+export const SEED_TRANSACTIONS: Transaction[] = [
+  { id: 1,  date: '2025-04-01', description: 'Monthly Salary',    category: 'Salary',        type: 'income',  amount: 5200 },
+  { id: 2,  date: '2025-04-02', description: 'Supermarket',       category: 'Food',          type: 'expense', amount: 142.5 },
+  { id: 3,  date: '2025-04-03', description: 'Uber Rides',        category: 'Transport',     type: 'expense', amount: 38.75 },
+  { id: 4,  date: '2025-04-05', description: 'Netflix',           category: 'Entertainment', type: 'expense', amount: 15.99 },
+  { id: 5,  date: '2025-04-06', description: 'Rent',              category: 'Housing',       type: 'expense', amount: 1400 },
+  { id: 6,  date: '2025-04-07', description: 'Freelance Project', category: 'Freelance',     type: 'income',  amount: 850 },
+  { id: 7,  date: '2025-04-08', description: 'Pharmacy',          category: 'Healthcare',    type: 'expense', amount: 62.3 },
+  { id: 8,  date: '2025-04-10', description: 'Online Shopping',   category: 'Shopping',      type: 'expense', amount: 215.4 },
+  { id: 9,  date: '2025-04-12', description: 'Restaurant',        category: 'Food',          type: 'expense', amount: 89.0 },
+  { id: 10, date: '2025-04-13', description: 'Electricity Bill',  category: 'Housing',       type: 'expense', amount: 110 },
+  { id: 11, date: '2025-04-14', description: 'Stock Dividend',    category: 'Investment',    type: 'income',  amount: 320 },
+  { id: 12, date: '2025-04-15', description: 'Coffee Shop',       category: 'Food',          type: 'expense', amount: 24.5 },
+  { id: 13, date: '2025-04-16', description: 'Gym Membership',    category: 'Healthcare',    type: 'expense', amount: 45 },
+  { id: 14, date: '2025-04-17', description: 'Taxi',              category: 'Transport',     type: 'expense', amount: 22 },
+  { id: 15, date: '2025-04-18', description: 'Concert Tickets',   category: 'Entertainment', type: 'expense', amount: 180 },
+  { id: 16, date: '2025-04-20', description: 'Bonus',             category: 'Salary',        type: 'income',  amount: 1000 },
+  { id: 17, date: '2025-04-21', description: 'New Shoes',         category: 'Shopping',      type: 'expense', amount: 135 },
+  { id: 18, date: '2025-04-22', description: 'Lunch Out',         category: 'Food',          type: 'expense', amount: 47 },
+  { id: 19, date: '2025-04-24', description: 'Internet Bill',     category: 'Housing',       type: 'expense', amount: 59.99 },
+  { id: 20, date: '2025-04-25', description: 'Freelance Design',  category: 'Freelance',     type: 'income',  amount: 600 },
+  { id: 21, date: '2025-03-01', description: 'Monthly Salary',    category: 'Salary',        type: 'income',  amount: 5200 },
+  { id: 22, date: '2025-03-05', description: 'Groceries',         category: 'Food',          type: 'expense', amount: 188 },
+  { id: 23, date: '2025-03-06', description: 'Rent',              category: 'Housing',       type: 'expense', amount: 1400 },
+  { id: 24, date: '2025-03-10', description: 'Freelance',         category: 'Freelance',     type: 'income',  amount: 500 },
+  { id: 25, date: '2025-03-15', description: 'Clothes',           category: 'Shopping',      type: 'expense', amount: 290 },
+  { id: 26, date: '2025-03-18', description: 'Doctor Visit',      category: 'Healthcare',    type: 'expense', amount: 120 },
+  { id: 27, date: '2025-03-22', description: 'Fuel',              category: 'Transport',     type: 'expense', amount: 65 },
+  { id: 28, date: '2025-03-28', description: 'Spotify',           category: 'Entertainment', type: 'expense', amount: 9.99 },
+  { id: 29, date: '2025-02-01', description: 'Monthly Salary',    category: 'Salary',        type: 'income',  amount: 5200 },
+  { id: 30, date: '2025-02-06', description: 'Rent',              category: 'Housing',       type: 'expense', amount: 1400 },
+  { id: 31, date: '2025-02-10', description: 'Valentine Dinner',  category: 'Food',          type: 'expense', amount: 210 },
+  { id: 32, date: '2025-02-15', description: 'Investment Return', category: 'Investment',    type: 'income',  amount: 450 },
+  { id: 33, date: '2025-02-20', description: 'Online Course',     category: 'Other',         type: 'expense', amount: 199 },
+  { id: 34, date: '2025-01-01', description: 'Monthly Salary',    category: 'Salary',        type: 'income',  amount: 5200 },
+  { id: 35, date: '2025-01-06', description: 'Rent',              category: 'Housing',       type: 'expense', amount: 1400 },
+  { id: 36, date: '2025-01-10', description: 'New Year Party',    category: 'Entertainment', type: 'expense', amount: 350 },
+  { id: 37, date: '2024-12-01', description: 'Monthly Salary',    category: 'Salary',        type: 'income',  amount: 5200 },
+  { id: 38, date: '2024-12-06', description: 'Rent',              category: 'Housing',       type: 'expense', amount: 1400 },
+  { id: 39, date: '2024-12-20', description: 'Christmas Shopping',category: 'Shopping',      type: 'expense', amount: 620 },
+  { id: 40, date: '2024-11-01', description: 'Monthly Salary',    category: 'Salary',        type: 'income',  amount: 5200 },
+];
